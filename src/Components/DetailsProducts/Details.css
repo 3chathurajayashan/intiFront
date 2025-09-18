@@ -1,0 +1,172 @@
+.medical-product-page {
+  padding: 40px 20px;
+  max-width: 1300px;
+  margin: auto;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #222;
+  background: #f8fafd;
+}
+
+/* Back button */
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #0072c6;
+  font-size: 16px;
+  margin-bottom: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+/* Product card */
+.medical-product-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+}
+
+/* Image section */
+.image-section {
+  flex: 1 1 500px;
+  position: relative;
+  border-radius: 15px;
+  background: #f1faff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.product-main-image {
+  width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+.image-section:hover .product-main-image {
+  transform: scale(1.05);
+}
+.prev-btn, .next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,114,198,0.6);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+.prev-btn:hover, .next-btn:hover { background: #005a99; }
+
+/* Info section */
+.info-section {
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.product-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #0072c6;
+}
+.product-price {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0072c6;
+}
+.instock { color: green; font-weight: 600; }
+.outstock { color: red; font-weight: 600; }
+.product-description { font-size: 15px; color: #333; line-height: 1.5; }
+
+/* Medical specific details */
+.medical-details p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+/* Quantity */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.quantity-selector button {
+  background: #0072c6;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  padding: 6px 14px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.quantity-selector span {
+  font-size: 16px;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Add to cart */
+.buy-btn {
+  padding: 12px 25px;
+  background: #0072c6;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.buy-btn:hover {
+  background: #005a99;
+  transform: translateY(-2px);
+}
+
+/* Related products */
+.related-products-section {
+  margin-top: 50px;
+}
+.related-products-section h2 {
+  color: #0072c6;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+.related-carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+.related-carousel::-webkit-scrollbar {
+  height: 8px;
+}
+.related-carousel::-webkit-scrollbar-thumb {
+  background: #0072c6;
+  border-radius: 4px;
+}
+.related-card {
+  flex: 0 0 200px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+}
+.related-card:hover {
+  transform: translateY(-5px);
+}
