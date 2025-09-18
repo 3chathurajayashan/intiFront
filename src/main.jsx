@@ -10,6 +10,18 @@ import Login from '../src/Components/Login/Login.jsx'
 import Profile from './Components/AdProfile/AdminProfile.jsx'
 import Product from './Components/ProductSection/Product.jsx'
 import ProductDetails from './Components/DetailsProducts/ProductDetails.jsx'
+import Cart from './Components/CartSection/Cart.jsx'
+import Billing from './Components/BillingSection/Billing.jsx'
+import UserLogin from './Components/UserLogin/UserLog.jsx';
+
+
+
+// --- Helper function to get logged-in userId ---
+const getUserId = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user?._id || null;
+};
+
 
 
 const router = createBrowserRouter([
@@ -32,12 +44,25 @@ const router = createBrowserRouter([
   },
         {
     path:"/product",
-    element: <Product />,
+    element: <Product userId={getUserId()} />,
   },
    
       {
     path:"/product/:id",
     element: <ProductDetails />,
+  },
+    {
+  path: "/cart",
+  element: <Cart userId={getUserId()} />,
+},
+        {
+    path:"/billing",
+    element: <Billing />,
+  },
+   
+        {
+    path:"/logins",
+    element: <UserLogin/>,
   },
    
    

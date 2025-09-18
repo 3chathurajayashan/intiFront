@@ -11,7 +11,7 @@ function Home()
         <Header />
         <Link to="/signup">Sign up</Link>
         <Product />
-        
+         <Link to="/logins">user Sign in</Link>
       
     </div>
   )

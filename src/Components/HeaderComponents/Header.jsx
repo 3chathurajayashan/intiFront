@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ShoppingCart,
@@ -10,24 +10,43 @@ import {
   Phone,
 } from "lucide-react";
 import "../HeaderComponents/Header.css";
+import axios from "axios";
 
-// ✅ Temporary mock hook (replace with your shop context later)
-const useShop = () => {
-  return {
-    getCartItemsCount: () => 2, // mock cart count
-    wishlistItems: [1, 2], // mock wishlist items
+// ✅ Hook to fetch dynamic cart count
+const useCartCount = () => {
+  const [count, setCount] = useState(0);
+
+  const getUserId = () => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    return storedUser?._id || null;
   };
+  const userId = getUserId();
+
+  const fetchCartCount = async () => {
+    if (!userId) return;
+    try {
+      const res = await axios.get(`http://localhost:5001/cart/${userId}`);
+      const total = res.data.cart.reduce((acc, item) => acc + item.quantity, 0);
+      setCount(total);
+    } catch (err) {
+      console.error("Failed to fetch cart count", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCartCount();
+
+    // Listen to localStorage changes from other tabs
+    const handleStorage = () => fetchCartCount();
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [userId]);
+
+  return { count, fetchCartCount };
 };
 
 // ✅ Reusable Button
-const Button = ({
-  children,
-  onClick,
-  type = "button",
-  className = "",
-  variant = "default",
-  size = "default",
-}) => {
+const Button = ({ children, onClick, type = "button", className = "", variant = "default", size = "default" }) => {
   let base =
     "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
   let variants =
@@ -37,11 +56,7 @@ const Button = ({
   let sizes = size === "icon" ? "p-2" : "px-4 py-2";
 
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`${base} ${variants} ${sizes} ${className}`}
-    >
+    <button type={type} onClick={onClick} className={`${base} ${variants} ${sizes} ${className}`}>
       {children}
     </button>
   );
@@ -51,7 +66,10 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const { getCartItemsCount, wishlistItems } = useShop();
+
+  const wishlistItems = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+  const { count: cartCount } = useCartCount(); // ✅ dynamic cart count
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -74,8 +92,7 @@ const Header = () => {
             <Phone className="icon-sm" /> 24/7 Support: +94-800-Nancee Pvt
           </div>
           <div className="hidden md:flex items-center gap-2">
-            <span>Free shipping on orders over 6500RS</span> •{" "}
-            <span>Licensed Company</span>
+            <span>Free shipping on orders over 6500RS</span> • <span>Licensed Company</span>
           </div>
         </div>
       </div>
@@ -93,10 +110,7 @@ const Header = () => {
         </Link>
 
         {/* Search (Desktop) */}
-        <form
-          onSubmit={handleSearch}
-          className="hidden md:flex flex-1 max-w-lg mx-8"
-        >
+        <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-lg mx-8">
           <div className="relative w-full">
             <input
               type="text"
@@ -118,11 +132,7 @@ const Header = () => {
           <Link to="/wishlist">
             <Button variant="ghost" size="icon" className="hidden md:flex relative">
               <Heart className="w-6 h-6" />
-              {wishlistItems.length > 0 && (
-                <span className="badge wishlist-badge">
-                  {wishlistItems.length}
-                </span>
-              )}
+              {wishlistItems.length > 0 && <span className="badge wishlist-badge">{wishlistItems.length}</span>}
             </Button>
           </Link>
 
@@ -137,11 +147,7 @@ const Header = () => {
           <Link to="/cart">
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="w-6 h-6" />
-              {getCartItemsCount() > 0 && (
-                <span className="badge cart-badge">
-                  {getCartItemsCount()}
-                </span>
-              )}
+              {cartCount > 0 && <span className="badge cart-badge">{cartCount}</span>}
             </Button>
           </Link>
 
@@ -226,9 +232,7 @@ const Header = () => {
                 <Button variant="ghost" size="icon" className="relative">
                   <Heart className="w-6 h-6" />
                   {wishlistItems.length > 0 && (
-                    <span className="badge wishlist-badge-mobile">
-                      {wishlistItems.length}
-                    </span>
+                    <span className="badge wishlist-badge-mobile">{wishlistItems.length}</span>
                   )}
                 </Button>
               </Link>

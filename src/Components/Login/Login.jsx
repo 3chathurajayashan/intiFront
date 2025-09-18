@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../Login/Log.css";
@@ -21,14 +21,30 @@ function Login() {
     try {
       const response = await sendRequest();
       if (response.status === "ok") {
-        // Save user info
-        localStorage.setItem("currentUser", JSON.stringify(response.user));
-        history("/profile");  
+        const loggedUser = response.user;
+
+        // Save user info to localStorage
+        localStorage.setItem("currentUser", JSON.stringify(loggedUser));
+
+        // Redirect based on role
+        switch (loggedUser.role) {
+          case "admin":
+            history("/profile");
+            break;
+          case "inventory":
+            history("/profile");
+            break;
+          case "sales":
+            history("/profile");
+            break;
+          default:
+            history("/"); // fallback
+        }
       } else {
         alert(response.message || "Invalid credentials!");
       }
     } catch (err) {
-      alert(err.message);
+      alert(err.response?.data?.message || err.message);
     }
   };
 
@@ -43,12 +59,12 @@ function Login() {
   return (
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
-        <h2 className="form-title">Sign In Admin</h2>
+        <h2 className="form-title">Sign In Employee</h2>
 
-        <label>User Mail</label>
+        <label>Email</label>
         <input
-          type='email'
-          name='gmail'
+          type="email"
+          name="gmail"
           required
           value={user.gmail}
           onChange={handleInputChange}
@@ -56,8 +72,8 @@ function Login() {
 
         <label>Password</label>
         <input
-          type='password'
-          name='password'
+          type="password"
+          name="password"
           required
           value={user.password}
           onChange={handleInputChange}

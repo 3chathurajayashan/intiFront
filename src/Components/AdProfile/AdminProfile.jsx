@@ -13,7 +13,7 @@ function Profile() {
     setTimeout(() => {
       if (storedUser) setUser(JSON.parse(storedUser));
       setLoading(false);
-    }, 1900); // 1.5 seconds delay
+    }, 1500);
   }, []);
 
   if (loading) return (
@@ -25,6 +25,22 @@ function Profile() {
     </div>
   );
 
+  if (!user) return <p>No user data found.</p>;
+
+  // Convert role string to readable format
+  const getRoleName = (role) => {
+    switch(role) {
+      case "admin":
+        return "Admin";
+      case "inventory":
+        return "Inventory Manager";
+      case "sales":
+        return "Sales Representative";
+      default:
+        return "Employee";
+    }
+  };
+
   return (
     <div className="profile-dashboard">
       <div className="profile-header">
@@ -32,6 +48,7 @@ function Profile() {
           <FaUserCircle />
         </div>
         <h2 className="profile-name">{user.name}</h2>
+        <h4 className="profile-role">{getRoleName(user.role)}</h4> {/* Role displayed here */}
       </div>
 
       <div className="profile-cards">

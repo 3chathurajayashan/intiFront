@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "../Register/Reg.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,10 +8,11 @@ function Register() {
 
   const [user, setUser] = useState({
     name: "",
-    gmail: "",
+    gmail: "",      // keep as gmail
     mobile: "",
     password: "",
     homeTown: "",
+    role: "admin",  // default role
   });
 
   const handleInputChange = (e) => {
@@ -23,21 +24,22 @@ function Register() {
     e.preventDefault();
     sendRequest()
       .then(() => {
-        alert("SignIn Success!");
-        history("/");
+        alert("Sign Up Success!");
+        history("/"); // redirect to login or dashboard
       })
       .catch((err) => {
-        alert(err.message);
+        alert(err.response?.data?.message || err.message);
       });
   };
 
   const sendRequest = async () => {
-    const res = await axios.post("http://localhost:5001/Admins", {
+    const res = await axios.post("http://localhost:5001/admins", {
       name: String(user.name),
-      gmail: String(user.gmail),
-      mobile: Number(user.mobile),
+      gmail: String(user.gmail),      // corrected here
+      mobile: String(user.mobile),
       password: String(user.password),
       homeTown: String(user.homeTown),
+      role: user.role,
     });
     return res.data;
   };
@@ -45,24 +47,61 @@ function Register() {
   return (
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
-        <h2 className="form-title">Sign Up Admin</h2>
+        <h2 className="form-title">Sign Up Employee</h2>
 
         <label>Name</label>
-        <input type='text' name='name' required value={user.name} onChange={handleInputChange} />
+        <input
+          type="text"
+          name="name"
+          required
+          value={user.name}
+          onChange={handleInputChange}
+        />
 
-        <label>Gmail</label>
-        <input type='email' name='gmail' required value={user.gmail} onChange={handleInputChange} />
+        <label>Email</label>
+        <input
+          type="email"
+          name="gmail"
+          required
+          value={user.gmail}
+          onChange={handleInputChange}
+        />
 
         <label>Mobile</label>
-        <input type='text' name='mobile' required value={user.mobile} onChange={handleInputChange} />
+        <input
+          type="text"
+          name="mobile"
+          required
+          value={user.mobile}
+          onChange={handleInputChange}
+        />
 
         <label>Password</label>
-        <input type='password' name='password' required value={user.password} onChange={handleInputChange} />
+        <input
+          type="password"
+          name="password"
+          required
+          value={user.password}
+          onChange={handleInputChange}
+        />
 
         <label>Home Town</label>
-        <input type='text' name='homeTown' required value={user.homeTown} onChange={handleInputChange} />
+        <input
+          type="text"
+          name="homeTown"
+          required
+          value={user.homeTown}
+          onChange={handleInputChange}
+        />
 
-        <button type="submit">Sign </button>
+        <label>Role</label>
+        <select name="role" value={user.role} onChange={handleInputChange}>
+          <option value="admin">Admin</option>
+          <option value="inventory">Inventory Manager</option>
+          <option value="sales">Sales Rep</option>
+        </select>
+
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );

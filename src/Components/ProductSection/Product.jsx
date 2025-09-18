@@ -1,73 +1,85 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // styles
 import "../ProductSection/Product.css";
 
 export default function Product() {
   const [products, setProducts] = useState([]);
+  const [displayCount, setDisplayCount] = useState(4);
   const navigate = useNavigate();
 
+  const getUserId = () => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    return storedUser?._id || null;
+  };
+  const userId = getUserId();
+
+  // --- Load products ---
   useEffect(() => {
     axios
       .get("http://localhost:5001/products")
-      .then((res) => setProducts(res.data.products))
+      .then((res) => setProducts(res.data.products || res.data))
       .catch((err) => console.error(err));
   }, []);
 
-  // Responsive product count
+  // --- Responsive display count ---
   const getDisplayCount = () => {
     const width = window.innerWidth;
     if (width < 768) return 2;
     if (width < 1024) return 3;
     return 4;
   };
-
-  const [displayCount, setDisplayCount] = useState(getDisplayCount());
-
   useEffect(() => {
     const handleResize = () => setDisplayCount(getDisplayCount());
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // --- Add to Cart ---
+  const handleAddToCart = async (productId) => {
+    if (!userId) {
+      toast.error("Please login to add products to cart", { position: "top-right" });
+      navigate("/logins");
+      return;
+    }
+
+    try {
+      const res = await axios.post(`http://localhost:5001/cart/${userId}/add`, { productId, quantity: 1 });
+      toast.success(res.data.message || "Product added to cart!", { position: "top-right" });
+    } catch (err) {
+      console.error("Add to cart error:", err.response?.data || err.message);
+      toast.error("Failed to add product to cart", { position: "top-right" });
+    }
+  };
+
   return (
     <div className="featured-products-wow">
+      {/* Toast Notifications */}
+      <ToastContainer autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick pauseOnHover />
+
       {/* Heading */}
       <div className="wow-heading-wrapper">
         <h2 className="wow-heading">
-          <span className="wow-text-blue">NEW</span>{" "}
-          <span className="wow-text-teal">ARRIVALS</span>
+          <span className="wow-text-blue">NEW</span> <span className="wow-text-teal">ARRIVALS</span>
         </h2>
         <div className="wow-paragraphs">
-          <p className="wow-para fade-up" style={{ animationDelay: "0.2s" }}>
-            Explore the latest products hand-picked for quality and style.
-          </p>
-          <p className="wow-para fade-up" style={{ animationDelay: "0.5s" }}>
-            Stay ahead with trending items and exclusive offers just for you.
-          </p>
-          <p className="wow-para fade-up" style={{ animationDelay: "0.8s" }}>
-            Discover premium products in one glance.
-          </p>
+          <p className="wow-para fade-up" style={{ animationDelay: "0.2s" }}>Explore the latest products hand-picked for quality and style.</p>
+          <p className="wow-para fade-up" style={{ animationDelay: "0.5s" }}>Stay ahead with trending items and exclusive offers just for you.</p>
+          <p className="wow-para fade-up" style={{ animationDelay: "0.8s" }}>Discover premium products in one glance.</p>
         </div>
       </div>
 
       {/* Products Display */}
       <div className="main">
         {products.slice(0, displayCount).map((p) => (
-          <div
-            key={p._id}
-            className="card wow-card premium-card"
-            style={{ cursor: "pointer" }}
-            onClick={() => navigate(`/product/${p._id}`)} // Navigate to details
-          >
-            {/* Product Images */}
+          <div key={p._id} className="card wow-card premium-card" style={{ cursor: "pointer" }} onClick={() => navigate(`/product/${p._id}`)}>
+            {/* Image Slider */}
             {p.images && p.images.length > 0 ? (
               p.images.length > 1 ? (
                 <div className="slider">
-                  <div
-                    className="slides"
-                    style={{ width: `${p.images.length * 100}%` }}
-                  >
+                  <div className="slides" style={{ width: `${p.images.length * 100}%` }}>
                     {p.images.map((img, index) => (
                       <img
                         key={index}
@@ -81,9 +93,7 @@ export default function Product() {
                 </div>
               ) : (
                 <img
-                  src={
-                    typeof p.images[0] === "string" ? p.images[0] : p.images[0].url
-                  }
+                  src={typeof p.images[0] === "string" ? p.images[0] : p.images[0].url}
                   alt={p.name}
                   className="single-image product-image premium-image"
                 />
@@ -92,7 +102,6 @@ export default function Product() {
               <div className="no-image">No Image Available</div>
             )}
 
-            {/* Info */}
             <h3 className="product-name">{p.name}</h3>
             <p className="product-description">{p.description}</p>
 
@@ -111,10 +120,13 @@ export default function Product() {
               </span>
             </div>
 
-            {/* Button (optional functionality) */}
+            {/* Add to Cart Button */}
             <button
               className="add-to-cart-btn premium-btn"
-              onClick={(e) => e.stopPropagation()} // prevent card click
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart(p._id);
+              }}
             >
               Add to Cart
             </button>
@@ -124,9 +136,7 @@ export default function Product() {
 
       {/* View All */}
       <div className="view-all-wrapper">
-        <a href="/all-products" className="view-all-wow">
-          View All Products
-        </a>
+        <a href="/all-products" className="view-all-wow">View All Products</a>
       </div>
     </div>
   );
