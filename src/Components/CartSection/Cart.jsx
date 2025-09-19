@@ -246,7 +246,7 @@ const handleQuantityChange = async (productId, delta) => {
               <div className="checkout-actions">
                 <button 
                   className="primary-checkout-btn"
-                  onClick={() => navigate("/billing", { state: { cart, totalAmount } })}
+                  onClick={() => navigate("/billing", { state: { cart, totalAmount , userId} })}
                 >
                   Proceed to Checkout
                 </button>
