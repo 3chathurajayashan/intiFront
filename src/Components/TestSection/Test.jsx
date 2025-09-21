@@ -118,7 +118,7 @@ const servicess = [
       >
         <div className="heroContent">
           <h1 className="heroTitle">Why you choose Nancee ?</h1>
-          <p className="heroDescription">The ultimate collection of Collaborations. All your hard works. One seamless experience.</p>
+          <p className="heroDescription">The ultimate collection of Collaborations. All your hard. One seamless experience.</p>
         </div>
         
         {/* Slider navigation arrows */}
