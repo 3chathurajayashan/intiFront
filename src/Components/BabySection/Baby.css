@@ -1,0 +1,251 @@
+.babyMain {
+  width: 100%;
+  height: 89vh;
+  display: flex;
+  background-image: url(../../Assests/b1.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+.babyMain .babyContent {
+  width: 100%;
+  height: 100%;
+  padding: 7px 2%;
+  position: relative;
+  z-index: 10;  
+}
+ 
+.png,
+.lgo,
+.bb2 {
+  position: absolute;
+  z-index: 1;  
+}
+
+ .svg{
+    bottom: 0;
+    position: absolute;
+   
+    
+ }
+ .bTitle{
+    display: flex;
+    flex-direction: column;
+    max-width: 65%;
+    line-height: 60px;
+    text-align: center;
+ }
+ .bTitle h1{
+    font-size: 56px;
+    color: rgb(76, 75, 75);
+     font-family: "Averia Gruesa Libre", system-ui;
+  font-weight: 500;
+  font-style: normal
+ }
+  .bTitle h3{
+    font-size: 15px;
+    color: rgb(35, 79, 142);
+  }
+  .paragraph{
+    max-width: 460px;
+    position: relative;
+    margin-left: 18%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+    .paragraph p{
+        font-size: 14px;
+        color: rgb(87, 84, 84);
+         font-family: "Alan Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+    }
+    .hrt{
+        font-size: 29px;
+        color:rgb(89, 89, 158);
+    }
+    
+.features-section {
+  margin-top: 8rem;
+  
+  z-index: 10;
+  text-align: center;
+  padding: 2rem 1rem;
+  position: relative;
+  margin-right: 20%;
+  
+  border-radius: 16px;
+}
+
+.features-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s forwards;
+}
+
+.feature-icon {
+  width: 22px;
+  height: 22px;
+  color: #10b981; /* green */
+  flex-shrink: 0;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.png{
+    width: 170px;
+    height: 150px;
+    position: absolute;
+    left: 9%;
+    top: 19%;
+}
+.lgo{
+position: absolute;
+width: 270px;
+right: 5%;
+}
+.bb2{
+position: absolute;
+bottom: 3%;
+width: 200px;
+right: 5%;
+}
+.btnss {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 19%;
+  margin-top: 3%;
+  z-index: 20; /* ✅ button always on top */
+}
+ .btnss .btnss{
+    display: flex;
+    flex-direction: row;
+ }
+.btnss button {
+  width: 200px;
+  padding: 12px;
+  background-color: #3b82f6;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+ .btlink{
+    color: #1f68de;
+    font-size: 17px;
+    text-decoration: underline;
+ }
+ .arrw{
+    rotate: -34deg;
+    font-size: 27px;
+    color: #1f68de;
+ }
+ /* Keep your original styles intact, just add animations */
+
+.babyMain .babyContent {
+  animation: fadeInContent 1s ease forwards;
+}
+
+@keyframes fadeInContent {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.bTitle {
+  animation: slideInTitle 1s ease forwards;
+}
+
+@keyframes slideInTitle {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.paragraph {
+  animation: fadeUp 1s ease 0.5s forwards;
+}
+
+.hrt {
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25%, 75% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+}
+
+.btnss button {
+  transition: all 0.3s ease;
+}
+
+.btnss button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+}
+
+.arrw {
+  animation: bounceArrow 1.5s infinite alternate;
+}
+
+@keyframes bounceArrow {
+  from { transform: rotate(-34deg) translateY(0); }
+  to { transform: rotate(-34deg) translateY(-8px); }
+}
+
+.feature-item {
+  animation: fadeUp 0.6s forwards;
+}
+
+.feature-item:hover {
+  transform: scale(1.03);
+}
+
+.png, .lgo, .bb2 {
+  animation: float 3s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}

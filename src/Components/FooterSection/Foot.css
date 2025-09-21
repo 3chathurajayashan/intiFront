@@ -1,0 +1,209 @@
+.footer {
+  background: #111827; /* gray-900 */
+  color: white;
+}
+
+/* Trust Badges */
+.trust-badges {
+  background: #1f2937; /* gray-800 */
+  padding: 2rem 0;
+}
+
+.trust-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.trust-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.trust-icon.green {
+  color: #34d399;
+}
+.trust-icon.blue {
+  color: #60a5fa;
+}
+.trust-icon.purple {
+  color: #a78bfa;
+}
+.trust-icon.yellow {
+  color: #facc15;
+}
+
+.trust-title {
+  font-weight: 600;
+}
+.trust-sub {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* Main Footer */
+.footer-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.brand-logo {
+  background: linear-gradient(to right, #2563eb, #9333ea);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+.logo-inner {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: white;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  font-weight: bold;
+}
+.brand-text {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.brand-desc {
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+.social-links a {
+  color: #9ca3af;
+  transition: color 0.3s;
+}
+.social-links a:hover {
+  color: #60a5fa;
+}
+
+/* Footer lists */
+.footer-heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-list li a {
+  color: #9ca3af;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+.footer-list li a:hover {
+  color: white;
+}
+
+/* Contact Info */
+.contact-info div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #9ca3af;
+  margin-bottom: 0.75rem;
+}
+.business-hours h4 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.business-hours p {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+.business-hours .online {
+  color: #34d399;
+}
+
+/* Bottom Bar */
+.footer-bottom {
+  border-top: 1px solid #1f2937;
+  padding: 1.5rem 0;
+}
+.footer-bottom-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .footer-bottom-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.footer-bottom-inner p {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.payments {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+.cards {
+  display: flex;
+  gap: 0.5rem;
+}
+.card {
+  width: 2rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card.visa {
+  background: #2563eb;
+}
+.card.mc {
+  background: #dc2626;
+}
+.card.amex {
+  background: #1e3a8a;
+}

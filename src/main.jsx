@@ -13,7 +13,13 @@ import ProductDetails from './Components/DetailsProducts/ProductDetails.jsx'
 import Cart from './Components/CartSection/Cart.jsx'
 import Billing from './Components/BillingSection/Billing.jsx'
 import UserLogin from './Components/UserLogin/UserLog.jsx';
+import Body from './Components/BodySection/Body.jsx';
+import Baby from './Components/BabySection/Baby.jsx';
+import Black from './Components/BlackSection/Black.jsx';
+import UserProf from './Components/UserProfile/UserProf.jsx'
+import CombinedLogin from './Components/CombinedLogins/ComLogin.jsx';
 
+ 
 
 
 // --- Helper function to get logged-in userId ---
@@ -36,7 +42,7 @@ const router = createBrowserRouter([
   },
       {
     path:"/login",
-    element: <Login />,
+    element: <CombinedLogin />,
   },
       {
     path:"/profile",
@@ -64,7 +70,16 @@ const router = createBrowserRouter([
     path:"/logins",
     element: <UserLogin/>,
   },
+        {
+    path:"/body",
+    element: <Body />,
+  },
+       {
+    path:"/userProfile",
+    element: <UserProf />,
+  },
    
+    
    
    
    

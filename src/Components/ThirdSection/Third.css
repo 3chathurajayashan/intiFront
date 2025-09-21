@@ -1,0 +1,421 @@
+/* Third.css - Updated with new styles for cards and video */
+.third-section {
+  min-height: 100vh;
+  position: relative;
+}
+
+.apple-vision-pro {
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  background: #000;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 60px;
+}
+
+.hero-logo {
+  margin-bottom: 20px;
+}
+
+.hero-logo svg {
+  fill: #fff;
+}
+
+.hero-title {
+  font-size: 80px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: -0.015em;
+}
+
+.hero-subtitle {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 30px;
+  letter-spacing: 0.007em;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.hero-link {
+  color: #2997ff;
+  text-decoration: none;
+  font-size: 21px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.hero-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #2997ff;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: right;
+}
+
+.hero-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.hero-link:hover {
+  color: #fff;
+}
+
+.hero-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+  will-change: transform, opacity;
+}
+
+.image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  z-index: 10;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  transform-origin: top;
+  transition: transform 0.1s ease-out;
+}
+
+/* Intro Section */
+.intro {
+  padding: 100px 0;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+.intro-content {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+.intro-text {
+  font-size: 38px;
+  line-height: 1.14286;
+  font-weight: 600;
+  letter-spacing: 0.007em;
+  max-width: 970px;
+  margin: 0 auto;
+}
+
+/* Features Section with Cards */
+.features {
+  padding: 100px 0;
+  background: #000;
+  color: #fff;
+}
+
+.features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 22px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.feature-card {
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+   
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.feature-image-container {
+  height: 250px;
+  overflow: hidden;
+}
+
+.feature-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.feature-card:hover .feature-image {
+  transform: scale(1.05);
+}
+
+.feature-content {
+  padding: 30px;
+}
+
+.feature-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.feature-description {
+  font-size: 17px;
+  line-height: 1.47059;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.feature-price {
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.shop-now-btn {
+  background: #0071e3;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.shop-now-btn:hover {
+  background: #0077ed;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 113, 227, 0.3);
+}
+
+/* Media Showcase with Full-Width Video */
+.media-showcase {
+  padding: 150px 0 0;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+.media-content {
+  max-width: 100%;
+  margin: 0 auto 80px;
+  padding: 0 22px;
+}
+
+.media-title {
+  font-size: 56px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: -0.015em;
+}
+
+.media-description {
+  font-size: 28px;
+  line-height: 1.14286;
+  font-weight: 400;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.full-width-video {
+  width: 100%;
+  height: 850px;
+  display: block;
+}
+
+.video-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.video-caption {
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .features-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 834px) {
+  .hero-title {
+    font-size: 60px;
+  }
+  
+  .hero-subtitle {
+    font-size: 24px;
+  }
+  
+  .features-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 600px;
+  }
+  
+  .media-title {
+    font-size: 40px;
+  }
+  
+  .media-description {
+    font-size: 21px;
+  }
+  
+  .scroll-indicator {
+    right: 20px;
+    bottom: 20px;
+  }
+  
+  .feature-image-container {
+    height: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 48px;
+  }
+  
+  .hero-subtitle {
+    font-size: 21px;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .intro-text {
+    font-size: 24px;
+  }
+  
+  .media-title {
+    font-size: 32px;
+  }
+  
+  .media-description {
+    font-size: 18px;
+  }
+  
+  .scroll-indicator {
+    display: none;
+  }
+  
+  .feature-content {
+    padding: 20px;
+  }
+  
+  .video-overlay {
+    padding: 20px;
+  }
+  
+  .video-caption {
+    font-size: 18px;
+  }
+}

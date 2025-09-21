@@ -1,0 +1,97 @@
+/* Sleek Horizontal Logo Slider */
+.apple-slider-container {
+  width: 100%;
+  padding: 30px 0;
+  background: linear-gradient(120deg, #ffffff, #ffffff);
+  overflow: hidden;
+  position: relative;
+}
+
+.logo-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-track {
+  display: flex;
+  width: fit-content;
+  animation: slide 25s linear infinite;
+  will-change: transform;
+}
+
+.slider-track.paused {
+  animation-play-state: paused;
+}
+
+.logo-item {
+  flex: 0 0 auto;
+  margin: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.logo-item img {
+  max-width: 100px;
+  max-height: 150px;
+  object-fit: contain;
+  filter: brightness(0.95) contrast(1.05);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.logo-item:hover img {
+  transform: scale(1.1);
+  filter: brightness(1) contrast(1.2);
+}
+
+/* Continuous sliding animation */
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .logo-item {
+    margin: 0 25px;
+  }
+  .logo-item img {
+    max-width: 90px;
+    max-height: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .apple-slider-container {
+    padding: 40px 0;
+  }
+  .logo-item {
+    margin: 0 20px;
+  }
+  .logo-item img {
+    max-width: 80px;
+    max-height: 60px;
+  }
+  .slider-track {
+    animation-duration: 18s;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-item {
+    margin: 0 15px;
+  }
+  .logo-item img {
+    max-width: 70px;
+    max-height: 50px;
+  }
+  .slider-track {
+    animation-duration: 12s;
+  }
+}

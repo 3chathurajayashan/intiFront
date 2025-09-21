@@ -10,6 +10,7 @@ export default function Product() {
   const [displayCount, setDisplayCount] = useState(4);
   const [activeSlides, setActiveSlides] = useState({});
   const [autoPlayIntervals, setAutoPlayIntervals] = useState({});
+  const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
 
   const getUserId = () => {
@@ -30,11 +31,12 @@ export default function Product() {
   const getDisplayCount = () => {
     const width = window.innerWidth;
     if (width < 768) return 2;
-    if (width < 1024) return 3;
+    if (width < 900) return 3;
     return 4;
   };
   useEffect(() => {
     const handleResize = () => setDisplayCount(getDisplayCount());
+    setDisplayCount(getDisplayCount());
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -43,126 +45,63 @@ export default function Product() {
   useEffect(() => {
     const initialSlides = {};
     const intervals = {};
-    
     products.forEach((p) => {
       if (p.images && p.images.length > 1) {
         initialSlides[p._id] = 0;
-        // Set up auto-play for each product with multiple images
         intervals[p._id] = setInterval(() => {
-          setActiveSlides(prev => {
+          setActiveSlides((prev) => {
             const currentSlide = prev[p._id] || 0;
             const nextSlide = (currentSlide + 1) % p.images.length;
-            return {
-              ...prev,
-              [p._id]: nextSlide
-            };
-          });
-        }, 4000); // Change slide every 4 seconds
-      }
-    });
-    
-    setActiveSlides(initialSlides);
-    setAutoPlayIntervals(intervals);
-    
-    // Clean up intervals on component unmount
-    return () => {
-      Object.values(intervals).forEach(interval => clearInterval(interval));
-    };
-  }, [products]);
-
-  // --- Change slide manually ---
-  const changeSlide = (productId, direction, e) => {
-    if (e) e.stopPropagation();
-    const product = products.find(p => p._id === productId);
-    if (!product || !product.images) return;
-    
-    // Pause auto-play briefly when manually changing slides
-    if (autoPlayIntervals[productId]) {
-      clearInterval(autoPlayIntervals[productId]);
-      
-      // Restart auto-play after a delay
-      setTimeout(() => {
-        const newInterval = setInterval(() => {
-          setActiveSlides(prev => {
-            const currentSlide = prev[productId] || 0;
-            const nextSlide = (currentSlide + 1) % product.images.length;
-            return {
-              ...prev,
-              [productId]: nextSlide
-            };
+            return { ...prev, [p._id]: nextSlide };
           });
         }, 4000);
-        
-        setAutoPlayIntervals(prev => ({
-          ...prev,
-          [productId]: newInterval
-        }));
-      }, 6000);
-    }
-    
-    setActiveSlides(prev => {
-      const currentSlide = prev[productId] || 0;
-      let newSlide;
-      
-      if (direction === 'next') {
-        newSlide = (currentSlide + 1) % product.images.length;
-      } else {
-        newSlide = (currentSlide - 1 + product.images.length) % product.images.length;
       }
-      
-      return {
-        ...prev,
-        [productId]: newSlide
-      };
     });
-  };
+    setActiveSlides(initialSlides);
+    setAutoPlayIntervals(intervals);
+    return () => Object.values(intervals).forEach((i) => clearInterval(i));
+  }, [products]);
 
-  // --- Pause auto-play on hover ---
-  const pauseAutoPlay = (productId) => {
-    if (autoPlayIntervals[productId]) {
-      clearInterval(autoPlayIntervals[productId]);
-      setAutoPlayIntervals(prev => ({
-        ...prev,
-        [productId]: null
-      }));
+  // --- Product labels ---
+  const getProductLabels = (product) => {
+    const labels = [];
+    if (product.stock === 0) labels.push({ type: "out-of-stock", text: "Out of Stock", position: "left" });
+    else if (product.stock < 10) labels.push({ type: "low-stock", text: "Low Stock", position: "left" });
+    else labels.push({ type: "in-stock", text: "In Stock", position: "left" });
+
+    if (product.priceLKR < 1000) labels.push({ type: "best-value", text: "Best Value", position: "right" });
+    else if (product.priceLKR > 5000) labels.push({ type: "premium", text: "Premium", position: "right" });
+
+    if (product.priceLKR && product.oldPrice && product.oldPrice > product.priceLKR) {
+      const discount = Math.round(((product.oldPrice - product.priceLKR) / product.oldPrice) * 100);
+      labels.push({ type: "discount", text: `${discount}% OFF`, position: "right" });
     }
+
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    const productDate = new Date(product.createdAt || product.dateAdded || Date.now());
+    if (productDate > oneWeekAgo) labels.push({ type: "new", text: "New", position: "right" });
+
+    return labels;
   };
 
-  // --- Resume auto-play when not hovering ---
-  const resumeAutoPlay = (productId) => {
-    const product = products.find(p => p._id === productId);
-    if (!product || !product.images || product.images.length <= 1) return;
-    
-    if (!autoPlayIntervals[productId]) {
-      const newInterval = setInterval(() => {
-        setActiveSlides(prev => {
-          const currentSlide = prev[productId] || 0;
-          const nextSlide = (currentSlide + 1) % product.images.length;
-          return {
-            ...prev,
-            [productId]: nextSlide
-          };
-        });
-      }, 4000);
-      
-      setAutoPlayIntervals(prev => ({
-        ...prev,
-        [productId]: newInterval
-      }));
-    }
-  };
+  // --- Prev/Next for product slider ---
+  const totalPages = Math.ceil(products.length / displayCount);
+  const handlePrevSet = () => setCurrentPage((prev) => Math.max(prev - 1, 0));
+  const handleNextSet = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
 
-  // --- Add to Cart ---
-  const handleAddToCart = async (productId, e) => {
+  const handleAddToCart = async (id, e) => {
     e.stopPropagation();
     if (!userId) {
       toast.error("Please login to add products to cart", { position: "top-right" });
       navigate("/logins");
       return;
     }
-
     try {
-      const res = await axios.post(`http://localhost:5001/cart/${userId}/add`, { productId, quantity: 1 });
+      const res = await axios.post(`http://localhost:5001/cart/${userId}/add`, {
+        productId: id,
+        quantity: 1,
+      });
       toast.success(res.data.message || "Product added to cart!", { position: "top-right" });
     } catch (err) {
       console.error("Add to cart error:", err.response?.data || err.message);
@@ -172,148 +111,76 @@ export default function Product() {
 
   return (
     <div className="featured-products-wow">
-      {/* Toast Notifications */}
-      <ToastContainer autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick pauseOnHover />
-
-      {/* Heading */}
+      <ToastContainer autoClose={2000} />
       <div className="wow-heading-wrapper">
         <h2 className="wow-heading">
-          <span className="wow-text-blue">NEW</span> <span className="wow-text-teal">ARRIVALS</span>
+          <span className="wow-text-blue">Today's Best</span>{" "}
+          <span className="wow-text-teal">deals for you</span>
         </h2>
-        <div className="wow-paragraphs">
-          <p className="wow-para fade-up" style={{ animationDelay: "0.2s" }}>Explore the latest products hand-picked for quality and style.</p>
-          <p className="wow-para fade-up" style={{ animationDelay: "0.5s" }}>Stay ahead with trending items and exclusive offers just for you.</p>
-          <p className="wow-para fade-up" style={{ animationDelay: "0.8s" }}>Discover premium products in one glance.</p>
-        </div>
       </div>
 
-      {/* Products Display */}
-      <div className="main">
-        {products.slice(0, displayCount).map((p) => (
-          <div key={p._id} className="card wow-card premium-card">
-            {/* Image Container with Slider */}
-            <div 
-              className="image-container" 
-              onClick={() => navigate(`/product/${p._id}`)}
-              onMouseEnter={() => pauseAutoPlay(p._id)}
-              onMouseLeave={() => resumeAutoPlay(p._id)}
-            >
-              {p.images && p.images.length > 0 ? (
-                p.images.length > 1 ? (
-                  <div className="slider-container">
-                    <div 
-                      className="slides-wrapper"
-                      style={{ transform: `translateX(-${(activeSlides[p._id] || 0) * 100}%)` }}
-                    >
-                      {p.images.map((img, index) => (
-                        <div key={index} className="slide">
-                          <img
-                            src={typeof img === "string" ? img : img.url}
-                            alt={`${p.name} - View ${index + 1}`}
-                            className="product-image premium-image"
-                          />
+      <div className="product-slider-container">
+        <button className="product-slider-btn prev" onClick={handlePrevSet} disabled={currentPage === 0}>‹</button>
+        <div className="product-slider-wrapper">
+          <div className="product-slider-track" style={{ transform: `translateX(-${currentPage * 100}%)` }}>
+            {products.map((p) => (
+              <div key={p._id} className="card wow-card premium-card fixed-card">
+                {getProductLabels(p).map((label, index) => (
+                  <div key={index} className={`product-label ${label.type} label-${label.position}`}>{label.text}</div>
+                ))}
+                <div className="image-container" onClick={() => navigate(`/product/${p._id}`)}>
+                  {p.images && p.images.length > 0 ? (
+                    p.images.length > 1 ? (
+                      <div className="slider-container">
+                        <div className="slides-wrapper" style={{ transform: `translateX(-${(activeSlides[p._id] || 0) * 100}%)` }}>
+                          {p.images.map((img, i) => (
+                            <div key={i} className="slide">
+                              <img src={typeof img === "string" ? img : img.url} alt={`${p.name}`} className="product-image premium-image" />
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                    
-                    {/* Slider Controls */}
-                    <button 
-                      className="slider-nav prev"
-                      onClick={(e) => changeSlide(p._id, 'prev', e)}
-                    >
-                      ‹
-                    </button>
-                    <button 
-                      className="slider-nav next"
-                      onClick={(e) => changeSlide(p._id, 'next', e)}
-                    >
-                      ›
-                    </button>
-                    
-                    {/* Slider Indicators */}
-                    <div className="slider-indicators">
-                      {p.images.map((_, index) => (
-                        <button
-                          key={index}
-                          className={`indicator ${(activeSlides[p._id] || 0) === index ? 'active' : ''}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setActiveSlides(prev => ({ ...prev, [p._id]: index }));
-                          }}
-                        />
-                      ))}
-                    </div>
-                    
-                    {/* Auto-play indicator */}
-                    <div className="auto-play-indicator">
-                      <div className="auto-play-progress">
-                        <div 
-                          className="auto-play-progress-bar" 
-                          style={{ 
-                            animation: `autoPlayProgress 4s linear ${autoPlayIntervals[p._id] ? 'infinite' : 'paused'}` 
-                          }}
-                        ></div>
+                        <div className="slider-indicators">
+                          {p.images.map((_, i) => (
+                            <button
+                              key={i}
+                              className={`indicator ${i === (activeSlides[p._id] || 0) ? 'active' : ''}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveSlides(prev => ({ ...prev, [p._id]: i }));
+                              }}
+                            />
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ) : (
-                  <img
-                    src={typeof p.images[0] === "string" ? p.images[0] : p.images[0].url}
-                    alt={p.name}
-                    className="single-image product-image premium-image"
-                  />
-                )
-              ) : (
-                <div className="no-image">No Image Available</div>
-              )}
-              
-              {/* Quick View Button */}
-              <button 
-                className="quick-view-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/product/${p._id}`);
-                }}
-              >
-                Quick View
-              </button>
-            </div>
-
-            {/* Product Info */}
-            <div className="product-info">
-              <h3 className="product-name">{p.name}</h3>
-              <p className="product-description">{p.description}</p>
-
-              <div className="details">
-                <span>Brand: {p.brand}</span>
-                <span>Category: {p.category}</span>
-              </div>
-
-              <div className="pricing-stock">
-                <div className="prices">
-                  <span className="price">LKR {p.priceLKR}</span>
-                  <span className="oldPrice">LKR {p.priceLKR + 300}</span>
+                    ) : (
+                      <img src={typeof p.images[0] === "string" ? p.images[0] : p.images[0].url} alt={p.name} className="single-image product-image premium-image" />
+                    )
+                  ) : <div className="no-image">No Image</div>}
                 </div>
-                <span className={p.stock > 0 ? "instock" : "outstock"}>
-                  {p.stock > 0 ? `In Stock (${p.stock})` : "Out of Stock"}
-                </span>
+
+                <div className="product-info">
+                  <h3 className="product-name">{p.name}</h3>
+                  <p className="product-description">{p.description}</p>
+                  <div className="product-details">
+                    <span className="brand">Brand: {p.brand}</span>
+                    <span className="category">Category: {p.category}</span>
+                  </div>
+                  <div className="pricing-stock">
+                    <div className="prices">
+                      <span className="price">LKR {p.priceLKR.toLocaleString()}</span>
+                      {p.oldPrice && p.oldPrice > p.priceLKR && <span className="oldPrice">LKR {p.oldPrice.toLocaleString()}</span>}
+                    </div>
+                    <span className={p.stock > 0 ? "instock" : "outstock"}>{p.stock > 0 ? `In Stock (${p.stock})` : "Out of Stock"}</span>
+                  </div>
+                  <button className="add-to-cart-btn premium-btn" onClick={(e) => handleAddToCart(p._id, e)} disabled={p.stock === 0}>
+                    {p.stock === 0 ? "Out of Stock" : "Add to Cart"}
+                  </button>
+                </div>
               </div>
-
-              {/* Add to Cart Button */}
-              <button
-                className="add-to-cart-btn premium-btn"
-                onClick={(e) => handleAddToCart(p._id, e)}
-              >
-                Add to Cart
-              </button>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* View All */}
-      <div className="view-all-wrapper">
-        <a href="/all-products" className="view-all-wow">View All Products</a>
+        </div>
+        <button className="product-slider-btn next" onClick={handleNextSet} disabled={currentPage >= totalPages - 1}>›</button>
       </div>
     </div>
   );

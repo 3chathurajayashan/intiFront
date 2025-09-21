@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../CartSection/Carts.css";
+import img1 from '../../Assests/cod.jpg'
+import img2 from '../../Assests/visa.jpg'
+import { FaLock, FaTruck, FaUndoAlt } from "react-icons/fa";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
@@ -254,9 +257,8 @@ const handleQuantityChange = async (productId, delta) => {
                 <div className="payment-methods">
                   <span>We accept:</span>
                   <div className="payment-icons">
-                    <span className="payment-icon">💳</span>
-                    <span className="payment-icon">🏦</span>
-                    <span className="payment-icon">📱</span>
+                     <img src={img1}></img>
+                      <img src={img2}></img>
                   </div>
                 </div>
                 
@@ -269,20 +271,20 @@ const handleQuantityChange = async (productId, delta) => {
               </div>
             </div>
 
-            <div className="security-badges">
-              <div className="security-item">
-                <span className="security-icon">🔒</span>
-                <span>Secure Checkout</span>
-              </div>
-              <div className="security-item">
-                <span className="security-icon">🚚</span>
-                <span>Free Shipping over LKR 5,000</span>
-              </div>
-              <div className="security-item">
-                <span className="security-icon">↩️</span>
-                <span>Easy Returns</span>
-              </div>
-            </div>
+           <div className="security-badges">
+  <div className="security-item">
+    <FaLock className="security-icon" />
+    <span>Secure Checkout</span>
+  </div>
+  <div className="security-item">
+    <FaTruck className="security-icon" />
+    <span>Free Shipping over LKR 5,000</span>
+  </div>
+  <div className="security-item">
+    <FaUndoAlt className="security-icon" />
+    <span>Easy Returns</span>
+  </div>
+</div>
           </div>
         </div>
       )}
