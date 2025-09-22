@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Header from '../Components/HeaderComponents/Header';
 import Product from '../Components/ProductSection/Product';
@@ -9,38 +9,44 @@ import IdeasSection from '../Components/IdeasSection/Idea';
 import Second from '../Components/SecondSlider/Second';
 import Black from '../Components/BlackSection/Black';
 import Third from '../Components/ThirdSection/Third';
- import Test from '../Components/TestSection/Test'
+import Test from '../Components/TestSection/Test';
 import Footer from '../Components/FooterSection/Footer';
- 
+import ArrowUp from '../Assests/arrowUp.png'; // Your arrow icon
 
 function Home() {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   useEffect(() => {
-    // Reinitialize scroll animations after all components are mounted
+    // Scroll animations initialization
     const initScrollAnimations = () => {
-      // This function will be called when the page loads and after each render if needed
       if (typeof window.initScrollAnimations === 'function') {
         window.initScrollAnimations();
       }
-      
-      // Alternative: manually trigger scroll events if your animations are based on scroll position
       window.dispatchEvent(new Event('scroll'));
     };
-
-    // Initialize on component mount
     initScrollAnimations();
 
-    // Set up a mutation observer to reinitialize when DOM changes
     const observer = new MutationObserver(initScrollAnimations);
-    observer.observe(document.body, { 
-      childList: true, 
-      subtree: true,
-      attributes: true
-    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    // Scroll-to-top icon logic
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const pageHeight = document.body.scrollHeight - window.innerHeight;
+      setShowScrollTop(scrollPosition > pageHeight / 2);
+    };
+
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
       observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div>
@@ -55,19 +61,28 @@ function Home() {
         <Black />
         <Test />
         <Footer />
-       
-       
       </div>
 
-      <Link to="/userProfile">userProfile</Link>
-
-      <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000 }}>
-        <Link to="/signup" style={{ marginRight: '10px', padding: '10px', background: '#007bff', color: 'white', textDecoration: 'none', borderRadius: '5px' }}>
+      {/* Fixed bottom buttons */}
+      <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000, display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+        <Link 
+          to="/signup" 
+          style={{ padding: '10px', background: '#007bff', color: 'white', textDecoration: 'none', borderRadius: '5px' }}
+        >
           Sign up
         </Link>
-        <Link to="/logins" style={{ padding: '10px', background: '#28a745', color: 'white', textDecoration: 'none', borderRadius: '5px' }}>
-          User Sign in
-        </Link>
+
+        {/* Scroll-to-top icon */}
+        {showScrollTop && (
+          <img 
+            src={ArrowUp} 
+            alt="Scroll to top" 
+            onClick={scrollToTop} 
+            style={{ width: '40px', height: '40px', cursor: 'pointer', transition: 'transform 0.3s', borderRadius: '50%', boxShadow: '0 2px 6px rgba(0,0,0,0.3)' }}
+            onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+          />
+        )}
       </div>
     </div>
   );
