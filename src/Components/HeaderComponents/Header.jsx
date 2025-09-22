@@ -79,8 +79,14 @@ const Header = () => {
     }
   };
 
-  const handleProfile = () => {
-    alert("🚧 Profile not implemented yet!");
+  
+  const handleUserClick = () => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      navigate("/userProfile"); // if logged in → go to profile
+    } else {
+      navigate("/login"); // if not logged in → go to login
+    }
   };
 
   return (
@@ -137,11 +143,9 @@ const Header = () => {
           </Link>
 
           {/* User */}
-          <Link to="/login">
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <User className="w-6 h-6" />
-            </Button>
-          </Link>
+          <Button variant="ghost" size="icon" className="hidden md:flex" onClick={handleUserClick}>
+            <User className="w-6 h-6" />
+          </Button>
 
           {/* Cart */}
           <Link to="/cart">
@@ -236,7 +240,7 @@ const Header = () => {
                   )}
                 </Button>
               </Link>
-              <Button variant="ghost" size="icon" onClick={handleProfile}>
+              <Button variant="ghost" size="icon" onClick={handleUserClick}>
                 <User className="w-6 h-6" />
               </Button>
             </div>
