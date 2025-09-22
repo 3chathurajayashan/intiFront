@@ -1,0 +1,117 @@
+/* Container Card */
+.profile-card {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Title */
+.profile-card h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #333333;
+}
+
+/* Notification Toast */
+.profile-toast {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #fff;
+  min-width: 280px;
+  text-align: center;
+  animation: fadeInOut 5s forwards;
+  z-index: 100;
+}
+
+.profile-toast.success {
+  background-color: #28a745;
+}
+
+.profile-toast.error {
+  background-color: #dc3545;
+}
+
+@keyframes fadeInOut {
+  0%, 20% { opacity: 0; transform: translateX(-50%) translateY(-10px);}
+  30%, 80% { opacity: 1; transform: translateX(-50%) translateY(0);}
+  90%, 100% { opacity: 0; transform: translateX(-50%) translateY(-10px);}
+}
+
+/* Form Styles */
+.complain-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.complain-form label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #555555;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-input {
+  margin-top: 6px;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+  outline: none;
+}
+
+/* Button Styles */
+.profile-btn-save {
+  padding: 12px 0;
+  background: linear-gradient(90deg, #ff0000, #ff0000);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.4s, transform 0.2s, box-shadow 0.2s;
+}
+
+.profile-btn-save:hover {
+  background: linear-gradient(90deg, #000000, #000000);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.profile-btn-save:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .profile-card {
+    padding: 25px 20px;
+  }
+}

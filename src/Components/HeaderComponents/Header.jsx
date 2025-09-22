@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 import "../HeaderComponents/Header.css";
 import axios from "axios";
+import { IoIosHelpCircleOutline } from "react-icons/io";
 
-// ✅ Hook to fetch dynamic cart count
+ 
 const useCartCount = () => {
   const [count, setCount] = useState(0);
 
@@ -45,7 +46,7 @@ const useCartCount = () => {
   return { count, fetchCartCount };
 };
 
-// ✅ Reusable Button
+ 
 const Button = ({ children, onClick, type = "button", className = "", variant = "default", size = "default" }) => {
   let base =
     "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
@@ -134,10 +135,10 @@ const Header = () => {
 
         {/* Icons */}
         <div className="flex items-center gap-4">
-          {/* Wishlist */}
-          <Link to="/wishlist">
+          
+          <Link to="/chatBot">
             <Button variant="ghost" size="icon" className="hidden md:flex relative">
-              <Heart className="w-6 h-6" />
+              <IoIosHelpCircleOutline  className="w-8 h-8" />
               {wishlistItems.length > 0 && <span className="badge wishlist-badge">{wishlistItems.length}</span>}
             </Button>
           </Link>
@@ -147,15 +148,15 @@ const Header = () => {
             <User className="w-6 h-6" />
           </Button>
 
-          {/* Cart */}
+          
           <Link to="/cart">
             <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="w-6 h-6" />
+              <ShoppingCart className="w-8 h-6" />
               {cartCount > 0 && <span className="badge cart-badge">{cartCount}</span>}
             </Button>
           </Link>
 
-          {/* Mobile Menu */}
+          
           <Button
             variant="ghost"
             size="icon"

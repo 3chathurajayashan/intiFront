@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+ 
+import ComplainForm from "../Complains/Complain";
 import '../TestSection/Test.css';
 import { FaHeadset, FaTruck, FaShieldAlt, FaGift } from "react-icons/fa";
-import sld1 from '../../Assests/p8.jpg';
+ 
 import ab1 from '../../Assests/ab7.jpeg';
 import ab2 from '../../Assests/ab8.jpeg';
 import ab3 from '../../Assests/ab9.jpg';
@@ -17,6 +19,7 @@ import cs4 from '../../Assests/cs4.png';
  
 const AppleServicesClone = () => {
   const [activeService, setActiveService] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [scrollPosition, setScrollPosition] = useState(0);
 
 const servicess = [
@@ -76,6 +79,11 @@ const servicess = [
       image:  ab6
     }
   ];
+
+   const [isOpen, setIsOpen] = useState(false);
+
+  const openForm = () => setIsOpen(true);
+  const closeForm = () => setIsOpen(false);
 
   // Handle scroll effect
   useEffect(() => {
@@ -208,7 +216,20 @@ const servicess = [
           <div className="sharingInfo">
             <h2>Face an Any Issue During Shopping Time ?</h2>
             <p>Team Nancee is always there for your assistance 24/7.Reach us by filling few things.</p>
-            <button className="primaryButton">Submit Complain Form</button>
+             <button className="primaryButton" onClick={openForm}>
+        Submit Complain Form
+      </button>
+
+      {isOpen && (
+        <div className="popupOverlay">
+          <div className="popupContent">
+            <span className="closeButton" onClick={closeForm}>
+              &times;
+            </span>
+            <ComplainForm closeForm={closeForm} /> {/* pass close function if needed */}
+          </div>
+        </div>
+      )}
           </div>
    <div className="sharingVisual">
   {servicess.slice(0, 4).map(service => (

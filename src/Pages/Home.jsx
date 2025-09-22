@@ -63,16 +63,22 @@ function Home() {
         <Footer />
       </div>
 
-      {/* Fixed bottom buttons */}
+       
       <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000, display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
         <Link 
           to="/signup" 
           style={{ padding: '10px', background: '#007bff', color: 'white', textDecoration: 'none', borderRadius: '5px' }}
         >
-          Sign up
+          Employee Sign up
+        </Link>
+        <Link 
+          to="/UserSign" 
+          style={{ padding: '10px', background: '#FFBF00', color: 'white', textDecoration: 'none', borderRadius: '5px' }}
+        >
+          User Sign up
         </Link>
 
-        {/* Scroll-to-top icon */}
+        
         {showScrollTop && (
           <img 
             src={ArrowUp} 

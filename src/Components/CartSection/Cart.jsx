@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link} from "react-router-dom";
 import "../CartSection/Carts.css";
 import img1 from '../../Assests/cod.jpg'
 import img2 from '../../Assests/visa.jpg'
@@ -103,7 +103,7 @@ const handleQuantityChange = async (productId, delta) => {
       <div className="cart-header">
         <h1>Shopping Cart</h1>
         <div className="cart-breadcrumb">
-          <span>Home</span> <span className="separator">›</span>
+         <Link to="/"> <span>Home</span> <span className="separator">›</span></Link> 
           <span>Cart</span>
         </div>
       </div>
@@ -115,7 +115,7 @@ const handleQuantityChange = async (productId, delta) => {
           <p>Looks like you haven't added anything to your cart yet.</p>
           <button 
             className="continue-shopping-btn"
-            onClick={() => navigate('/products')}
+            onClick={() => navigate('/')}
           >
             Continue Shopping
           </button>

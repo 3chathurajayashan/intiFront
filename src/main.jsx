@@ -18,7 +18,9 @@ import Baby from './Components/BabySection/Baby.jsx';
 import Black from './Components/BlackSection/Black.jsx';
 import UserProf from './Components/UserProfile/UserProf.jsx'
 import CombinedLogin from './Components/CombinedLogins/ComLogin.jsx';
-
+import ComplainForm from './Components/Complains/Complain.jsx';
+ import BotSec from './Components/ChatBotSection/BotSec.jsx'
+import UserSign from './Components/UserSignUp/UserSign.jsx'
  
 
 
@@ -77,6 +79,18 @@ const router = createBrowserRouter([
        {
     path:"/userProfile",
     element: <UserProf />,
+  },
+     {
+    path:"/complain",
+    element: <ComplainForm />,
+  },
+     {
+    path:"/chatBot",
+    element: <BotSec />,
+  },
+    {
+    path:"/UserSign",
+    element: <UserSign />,
   },
    
     

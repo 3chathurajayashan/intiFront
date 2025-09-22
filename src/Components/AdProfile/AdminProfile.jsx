@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "../AdProfile/prof.css";
+import "../AdProfile/ADprof.css";
 import { FaEnvelope, FaPhone, FaHome, FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // ✅ define navigate here
+  const navigate = useNavigate();  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("currentUser");
@@ -81,7 +81,7 @@ function Profile() {
             className="logout-btn"
             onClick={() => {
               localStorage.clear(); // clear everything
-              navigate("/"); // ✅ works now
+              navigate("/");  
             }}
           >
             Logout
